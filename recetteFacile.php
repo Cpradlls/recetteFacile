@@ -26,11 +26,12 @@
     // Requête de sélection 02
     $requete = "SELECT *
                 FROM `recettes`
-                WHERE `recette_id` = :recette_id"; // on cible l'épisode dont l'id est ...
+                WHERE `recette_id` = :recette_id"; 
     $prepare = $connexion->prepare($requete);
-    $prepare->execute(array(":recette_id" => 19)); // on cible l'épisode dont l'id est 2
+    $prepare->execute(array(":recette_id" => 19)); 
     $resultat = $prepare->fetchAll();
     print_r([$requete, $resultat]); // debug & vérification
+    
 
     // Requête d'insertion
     $requete = "INSERT INTO `recettes` (`recette_titre`, `recette_contenu`, `recette_datetime`) 
@@ -44,6 +45,7 @@
     $resultat = $prepare->rowCount(); // rowCount() nécessite PDO::MYSQL_ATTR_FOUND_ROWS => true
     $lastInsertedRecetteId = $connexion->lastInsertId(); // on récupère l'id automatiquement créé par SQL
     print_r([$requete, $resultat, $lastInsertedRecetteId]); // debug & vérification
+    
 
     // Requête de modification
     $icone = "😺";
@@ -57,6 +59,7 @@
     ));
     $resultat = $prepare->rowCount();
     print_r([$requete, $resultat]); // debug & vérification
+    
 
     // Requête de suppression
     $requete = "DELETE FROM `recettes`
@@ -77,6 +80,7 @@
     $resultat = $prepare->rowCount(); // rowCount() nécessite PDO::MYSQL_ATTR_FOUND_ROWS => true
     $lastInsertedHashtagId = $connexion->lastInsertId(); // on récupère l'id automatiquement créé par SQL
     print_r([$requete, $resultat, $lastInsertedHashtagId]); // debug & vérification
+    
 
     //Requête qui lie le hashtag "levain" à la recette du "pain au levain"
     $requete = "INSERT INTO `assoc_hashtags_recettes` (`assoc_hr_hashtag_id`, `assoc_hr_recette_id`) 
@@ -89,20 +93,9 @@
     $resultat = $prepare->rowCount(); // rowCount() nécessite PDO::MYSQL_ATTR_FOUND_ROWS => true
     $lastInsertedHashtagId = $connexion->lastInsertId(); // on récupère l'id automatiquement créé par SQL
     print_r([$requete, $resultat, $lastInsertedHashtagId]); // debug & vérification
+    
 
-    // //Pour aller plus loin
-    // $requete = "SELECT `assoc_hr_recette_id`
-    // FROM `assoc_hashtags_recettes`
-    // WHERE `assoc_hr_hashtag_id`= 1";
-    // $prepare = $connexion->prepare($requete);
-    // $prepare->execute();
-    // $resultat = $prepare->fetchAll();
-    // print_r([$requete, $resultat]);
-
-    // $requete = "SELECT `recette_titre`
-    // FROM `recettes`
-    // INNER JOIN `assoc_hashtags_recettes` ON `recette_id` = `assoc_hr_hashtag_id`
-    // WHERE `assoc_hr_hashtag_id` = 1";
+    // //Pour aller plus loin : requête de sélection pour requêter des données dont le hashtag est "nourriture" et afficher le titre de chaque recette concernée.
     $requete = "SELECT 
     hashtag_nom,
     recette_titre
@@ -115,7 +108,6 @@
     $resultat = $prepare->fetchAll();
     print_r([$requete, $resultat]);
     
-
 
   } catch (PDOException $e) {
 
